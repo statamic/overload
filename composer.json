@@ -1,0 +1,6 @@
+{
+    "name": "statamic/overload",
+    "require": {
+        "fzaninotto/faker": "^1.6@dev"
+    }
+}
