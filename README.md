@@ -1,5 +1,5 @@
 # Overload
-> Creates masses of test content to aid in load testing.
+> Creates masses of test content to aid in load testing Statamic v2
 
 ## Usage
 - Install the addon by copying the files into `site/addons/Overload`.
