@@ -1,5 +1,6 @@
-# Overload
-> Creates masses of test content to aid in load testing Statamic v2
+# Overload for Statamic ![Statamic 2.0](https://img.shields.io/badge/statamic-2.0-blue.svg?style=flat-square)
+
+CLI commands to create test and sample content. Useful for testing loads or while waiting around for client content.
 
 ## Usage
 - Install the addon by copying the files into `site/addons/Overload`.
