@@ -1,4 +1,4 @@
-# Overload for Statamic ![Statamic 2.0](https://img.shields.io/badge/statamic-2.0-blue.svg?style=flat-square)
+# Overload for Statamic ![Statamic v2](https://img.shields.io/badge/statamic-v2-blue.svg?style=flat-square)
 
 CLI commands to create test and sample content. Useful for testing loads or while waiting around for client content.
 
