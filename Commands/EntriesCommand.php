@@ -4,6 +4,7 @@ namespace Statamic\Addons\Overload\Commands;
 
 use Statamic\API\File;
 use Statamic\API\YAML;
+use Statamic\API\Entry;
 use Statamic\API\Config;
 use Statamic\API\Content;
 use Illuminate\Console\Command;
@@ -16,8 +17,8 @@ class EntriesCommand extends Command
      * @var string
      */
     protected $signature = 'overload:entries
-                            {folder? : Name of the folder to generate content in. If left blank you will be asked.}
-                            {count? : How many files to generate.}';
+                            {folder? : Name of the collection to generate entries in. If left blank you will be asked.}
+                            {count? : How many entries to generate.}';
 
     /**
      * The console command description.
@@ -37,30 +38,30 @@ class EntriesCommand extends Command
             ? $this->argument('count')
             : $this->ask('How many entries do you want?');
 
-        $collections = Content::collectionNames();
+        $collections = Content::collectionNames()->toArray();
 
-        $folder = $this->choice('In which collection would you like them?', $collections);
+        $collection = $this->choice('In which collection would you like them?', $collections);
 
-        $this->makeTheGoodStuff($count, $folder);
+        $this->makeTheGoodStuff($count, $collection);
 
         $this->info("Your entries have arrived. Happy testing!");
     }
 
-    public function makeTheGoodStuff($count, $folder)
+    public function makeTheGoodStuff($count, $collection)
     {
         $faker = \Faker\Factory::create();
-        $extension = Config::get('system.default_extension');
 
         $this->output->progressStart($count);
 
         for ($x = 1; $x <= $count; $x++) {
-            $content = YAML::dump([
-                'title' => $faker->catchPhrase,
-                'author' => $faker->name,
-                'tags' => $faker->words(3)
-            ], $faker->realText(500));
 
-            File::put(content_path('collections/') . $folder . '/' . $faker->date() . '.' . $faker->slug . '.' . $extension, $content);
+            $entry = Entry::create($faker->slug)
+                ->collection($collection)
+                ->with(['title' => $faker->catchPhrase, 'content' => $faker->realText(500)])
+                ->date()
+                ->get();
+
+            $entry->save();
 
             $this->output->progressAdvance();
         }
