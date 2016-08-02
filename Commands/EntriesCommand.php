@@ -7,6 +7,7 @@ use Statamic\API\YAML;
 use Statamic\API\Entry;
 use Statamic\API\Config;
 use Statamic\API\Content;
+use Statamic\API\Collection;
 use Illuminate\Console\Command;
 
 class EntriesCommand extends Command
@@ -38,7 +39,7 @@ class EntriesCommand extends Command
             ? $this->argument('count')
             : $this->ask('How many entries do you want?');
 
-        $collections = Content::collectionNames()->toArray();
+        $collections = Collection::handles();
 
         $collection = $this->choice('In which collection would you like them?', $collections);
 
@@ -47,19 +48,25 @@ class EntriesCommand extends Command
         $this->info("Your entries have arrived. Happy testing!");
     }
 
-    public function makeTheGoodStuff($count, $collection)
+    public function makeTheGoodStuff($count, $collection_name)
     {
         $faker = \Faker\Factory::create();
+
+        $collection = Collection::whereHandle($collection_name);
 
         $this->output->progressStart($count);
 
         for ($x = 1; $x <= $count; $x++) {
 
             $entry = Entry::create($faker->slug)
-                ->collection($collection)
-                ->with(['title' => $faker->catchPhrase, 'content' => $faker->realText(500)])
-                ->date()
-                ->get();
+                ->collection($collection_name)
+                ->with(['title' => $faker->catchPhrase, 'content' => $faker->realText(500)]);
+
+            if ($collection->order() === 'date') {
+                $entry->date();
+            } elseif ($collection->order() === 'number') {
+                $entry->order($x);
+            }
 
             $entry->save();
 
