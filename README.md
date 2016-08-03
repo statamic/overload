@@ -18,3 +18,8 @@ php please overload:entries [<folder>] [<count>]
 ```
 php please overload:users [<count>]
 ```
+
+### Assets
+```
+php please overload:assets
+```
