@@ -68,6 +68,7 @@ class EntriesCommand extends Command
                 $entry->order($x);
             }
 
+            $entry->ensureId();
             $entry->save();
 
             $this->output->progressAdvance();
