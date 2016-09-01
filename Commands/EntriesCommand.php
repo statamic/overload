@@ -48,6 +48,12 @@ class EntriesCommand extends Command
         $this->info("Your entries have arrived. Happy testing!");
     }
 
+    /**
+     * Make the good stuff
+     *
+     * @param int $count
+     * @param string $collection_name
+     */
     public function makeTheGoodStuff($count, $collection_name)
     {
         $faker = \Faker\Factory::create();
@@ -56,8 +62,10 @@ class EntriesCommand extends Command
 
         $this->output->progressStart($count);
 
-        for ($x = 1; $x <= $count; $x++) {
+        // Disable search auto indexing to prevent overhead especially if using an API-based driver like Algolia.
+        Config::set('search.auto_index', false);
 
+        for ($x = 1; $x <= $count; $x++) {
             $entry = Entry::create($faker->slug)
                 ->collection($collection_name)
                 ->with(['title' => $faker->catchPhrase, 'content' => $faker->realText(500)]);
