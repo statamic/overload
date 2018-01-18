@@ -4,6 +4,7 @@ CLI commands to create test and sample content. Useful for testing loads or whil
 
 ## Usage
 - Install the addon by copying the files into `site/addons/Overload`.
+- Run `php please update:addons` to install dependencies
 - Run the `please` command.
 
 ## Commands
