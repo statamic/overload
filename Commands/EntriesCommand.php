@@ -60,7 +60,7 @@ class EntriesCommand extends Command
                 'tags' => $faker->words(3)
             ], $faker->realText(500));
 
-            File::put(content_path('collections/') . $folder . '/' . $faker->date() . '.' . $faker->slug . '.' . $extension, $content);
+            File::put(site_path('content/collections/') . $folder . '/' . $faker->date() . '.' . $faker->slug . '.' . $extension, $content);
 
             $this->output->progressAdvance();
         }
