@@ -6,6 +6,7 @@ use Statamic\API\File;
 use Statamic\API\YAML;
 use Statamic\API\Config;
 use Statamic\API\Content;
+use Statamic\API\Collection;
 use Illuminate\Console\Command;
 
 class EntriesCommand extends Command
@@ -36,6 +37,10 @@ class EntriesCommand extends Command
         $folder = ($this->argument('folder'))
             ? $this->argument('folder')
             : $this->choice('In which collection would you like them?', Content::collectionNames());
+
+        if (! Collection::handleExists($folder)) {
+            return $this->error("Collection '{$folder}' doesn't exist.");
+        }
 
         $count = ($this->argument('count'))
             ? $this->argument('count')
