@@ -33,13 +33,13 @@ class EntriesCommand extends Command
      */
     public function handle()
     {
+        $folder = ($this->argument('folder'))
+            ? $this->argument('folder')
+            : $this->choice('In which collection would you like them?', Content::collectionNames());
+
         $count = ($this->argument('count'))
             ? $this->argument('count')
             : $this->ask('How many entries do you want?');
-
-        $collections = Content::collectionNames();
-
-        $folder = $this->choice('In which collection would you like them?', $collections);
 
         $this->makeTheGoodStuff($count, $folder);
 
